@@ -6,6 +6,10 @@ require 'sinatra/redis'
 KEY = "songs-#{Time.now.to_i}" # add a tiny bit of obscurity to the key so that multiple instances will not interfere
 REDIS_DELIMITER = "|||"
 
+configure :production do
+  set :redis, ENV['REDISTOGO_URL']
+end
+
 get '/' do
   @first_song = get_next_song
   haml :index
