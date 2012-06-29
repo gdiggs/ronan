@@ -5,6 +5,7 @@
 
   %body
     .content
+      .message
       .player
         - if @first_song[:url]
           .now-playing
@@ -16,10 +17,11 @@
             %span.added_by= @first_song[:added_by]
             \-
             %a.download{ :href => @first_song[:url], :target => '_blank' } download
+            %a.vote_to_delete{ :href => '' } vote to delete this song
           
           %audio{ :src => @first_song[:url], :autoplay => 'autoplay', :controls => 'controls', :song_key => @key }
             Bro, get a real browser, like Chrome or something.
-          %input.song-key{ :type => 'hidden', :value => @first_song[:key] }
+          %input.song_key{ :type => 'hidden', :value => @first_song[:key] }
           
         - else
           Damn! No songs :( - want to suggest one?

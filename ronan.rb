@@ -16,7 +16,6 @@ get '/' do
 end
 
 post '/add_song' do
-  puts params.inspect
   if url_is_valid?(params[:url])
     add_song params
     { :status => 'success', :message => 'Added song! Rock on!' }.to_json
@@ -27,6 +26,14 @@ end
 
 get '/next_song' do
   get_next_song(params[:last_song_id].to_s).to_json
+end
+
+post '/vote_to_delete' do
+  if vote_to_delete(params[:key])
+    { :status => 'success', :message => 'Okay, I get it! That song sucks.' }.to_json
+  else
+    { :status => 'success', :message => 'Thanks for the vote! If more people agree, maybe this song will go away.' }.to_json
+  end
 end
 
 def redis_push(data)
@@ -66,7 +73,15 @@ end
 
 # all urls should match URI standard and end in .mp3
 def url_is_valid?(url)
-  puts "#{url} #{url =~ URI.regexp}"
   url =~ URI.regexp && url =~ /\.mp3$/
+end
+
+def vote_to_delete(key)
+  if redis.incr("delete_#{key}") >= 5
+    redis.del(key)
+    true
+  else
+    false
+  end
 end
 

@@ -1,17 +1,88 @@
 $(function() {
 
+  var setMessage = function(data) {
+    $('.message').fadeOut(200).delay(200).text(data.message).fadeIn(200);
+    if(data.status == 'success') {
+      $('.message').removeClass('error');
+    } else {
+      $('.message').addClass('error');
+    }
+  };
+
+  // when the song ends, get the next song and update all the appropriate values
   $('.player audio')[0].addEventListener('ended', function() {
     var player = this;
 
-    $.getJSON('/next_song', {last_song_id: $('.song-key').val()}, function(response) {
+    $.getJSON('/next_song', {last_song_id: $('.song_key').val()}, function(response) {
       $('.now-playing .title').text(response.title)
       $('.now-playing .artist').text(response.artist)
       $('.now-playing .added_by').text(response.added_by)
       $('.now-playing .download').attr('href', response.url);
+      $('.song_key').val(response.key);
+
+      $('.vote_to_delete').show();
 
       player.src = response.url;
       player.currentTime = 0;
     });
   }, false);
+
+  // tell the server to delete this song if it gets enough votes
+  $('.vote_to_delete').click(function() {
+    var $link = $(this);
+    $.ajax({
+      url: '/vote_to_delete',
+      type: 'POST',
+      dataType: 'json',
+      data: { key: $('.song_key').val() },
+      success: function(response) {
+        setMessage(response);
+        $link.hide();
+      }
+    });
+    return false;
+  });
+
+  // form submission
+  $('form.suggest').submit(function() {
+    var $form = $(this),
+        valid = true;
+
+    // make sure all inputs have a value
+    $form.find('input').each(function(i, input) {
+      if(valid && $(input).val() == '') {
+        setMessage({status: 'error', message: "All inputs gotta have values. Don't skimp on me."});
+        valid = false;
+      }
+    });
+
+    // exit now if the form is invalid
+    if(!valid) {
+      return false;
+    }
+
+    $.ajax({
+      url: $form.attr('action'),
+      type: $form.attr('method'),
+      data: $form.serialize(),
+      dataType: 'json',
+      success: function(response) {
+        // set the message and clear the form
+        setMessage(response);
+
+        if(response.status == 'success') {
+          $form.find('input').val('');
+
+          // if we haven't been playing anything, refresh the page
+          // so there will be music
+          if($('audio').length == 0) {
+            location.reload();
+          }
+        }
+      }
+    });
+
+    return false;
+  });
 
 });
