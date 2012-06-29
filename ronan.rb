@@ -25,6 +25,10 @@ post '/add_song' do
   end
 end
 
+get '/next_song' do
+  get_next_song(params[:last_song_id].to_s).to_json
+end
+
 def redis_push(data)
   next_id = redis.incr "#{KEY}count"
   next_key = "#{KEY}_#{next_id}"
@@ -39,7 +43,7 @@ end
 def get_next_song(last_song_id = "")
   keys = redis.keys("#{KEY}_*")
   # make sure the same song won't play again
-  keys.delete("#{KEY}_#{last_song_id}")
+  keys.delete(last_song_id)
   # get random id from song keys
   next_song_key = keys.sample
   

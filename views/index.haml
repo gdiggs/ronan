@@ -12,10 +12,10 @@
             %span.title= @first_song[:title]
             by
             %span.artist= @first_song[:artist]
-            . Added by
+            \- Added by
             %span.added_by= @first_song[:added_by]
             \-
-            %a{ :href => @first_song[:url], :target => '_blank' } download
+            %a.download{ :href => @first_song[:url], :target => '_blank' } download
           
           %audio{ :src => @first_song[:url], :autoplay => 'autoplay', :controls => 'controls', :song_key => @key }
             Bro, get a real browser, like Chrome or something.
