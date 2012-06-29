@@ -3,7 +3,7 @@ Bundler.require
 
 require 'sinatra/redis'
 
-KEY = "songs-#{Time.now.to_i}" # add a tiny bit of obscurity to the key so that multiple instances will not interfere
+KEY = "songs" # add a tiny bit of obscurity to the key so that multiple instances will not interfere
 REDIS_DELIMITER = "|||"
 
 configure :production do
@@ -52,12 +52,12 @@ end
 # Returns raw redis string as a hash
 def split_data(data)
   array = data.to_s.split(REDIS_DELIMITER)
-  { :title => array[0], :artist => array[1], :url => array[2] }
+  { :title => array[0], :artist => array[1], :url => array[2], :added_by => array[3] }
 end
 
 # prepares data for redis. Expects a hash and returns a string
 def join_data(data)
-  [data[:title], data[:artist], data[:url]].join(REDIS_DELIMITER)
+  [data[:title], data[:artist], data[:url], data[:added_by]].join(REDIS_DELIMITER)
 end
 
 # all urls should match URI standard and end in .mp3

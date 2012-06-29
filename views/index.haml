@@ -12,6 +12,8 @@
             %span.title= @first_song[:title]
             by
             %span.artist= @first_song[:artist]
+            . Added by
+            %span.added_by= @first_song[:added_by]
             \-
             %a{ :href => @first_song[:url], :target => '_blank' } download
           
@@ -26,6 +28,7 @@
         %input.title{ :type => 'text', :name => 'title', :placeholder => 'title' }
         %input.artist{ :type => 'text', :name => 'artist', :placeholder => 'artist' }
         %input.url{ :type => 'text', :name => 'url', :placeholder => 'url' }
+        %input.added_by{ :type => 'text', :name => 'added_by', :placeholder => 'your name' }
         %input.submit{ :type => 'submit', :value => 'add song' }
 
     .footer
