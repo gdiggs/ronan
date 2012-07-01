@@ -1,5 +1,7 @@
 %html
   %head
+    %link{ :href=>'http://fonts.googleapis.com/css?family=Lato', :rel=>'stylesheet', :type=>'text/css' }
+    %link{ :rel=>"stylesheet", :type=>"text/css", :href=>"/stylesheet.css"}
     %script{ :src => 'http://code.jquery.com/jquery-1.7.2.min.js', :type => 'text/javascript' }
     %script{ :src => '/scripts.js', :type => 'text/javascript' }
 
@@ -9,13 +11,12 @@
       .player
         - if @first_song[:url]
           .now-playing
-            Now Playing:
             %span.title= @first_song[:title]
             by
             %span.artist= @first_song[:artist]
             \- Added by
             %span.added_by= @first_song[:added_by]
-            \-
+            %br
             %a.download{ :href => @first_song[:url], :target => '_blank' } download
             %a.vote_to_delete{ :href => '' } vote to delete this song
           
@@ -33,6 +34,13 @@
         %input.added_by{ :type => 'text', :name => 'added_by', :placeholder => 'your name' }
         %input.submit{ :type => 'submit', :value => 'add song' }
 
+      %p.directions
+        Grab a URL of an mp3 (like a public Dropbox link) and fill out the form above. Songs will expire in one week (sooner if they are voted away). Sit back, relax, listen, and enjoy!
+
     .footer
-      Created by Gordon Diggs in 2012
-      %p.disclaimer Disclaimer: only play music you are legally allowed to use, and do so at your own risk.
+      %p Created by Gordon Diggs in 2012
+      %p Disclaimer: only play music you are legally allowed to use, and do so at your own risk.
+      %p Background image by Lisa ([1]  Uploaded by Guitarpop) [CC-BY-SA-2.0 (http://creativecommons.org/licenses/by-sa/2.0)], via Wikimedia Commons
+
+%a{ :href=>"https://github.com/GordonDiggs/ronan" }
+  %img{ :style=>"position: absolute; top: 0; right: 0; border: 0;", :src=>"https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png", :alt=>"Fork me on GitHub"}

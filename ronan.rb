@@ -3,7 +3,7 @@ Bundler.require
 
 require 'sinatra/redis'
 
-KEY = "songs" # add a tiny bit of obscurity to the key so that multiple instances will not interfere
+KEY = "songs"
 REDIS_DELIMITER = "|||"
 
 configure :production do
@@ -36,11 +36,15 @@ post '/vote_to_delete' do
   end
 end
 
+get '/stylesheet.css' do
+  sass :stylesheet
+end
+
 def redis_push(data)
   next_id = redis.incr "#{KEY}count"
   next_key = "#{KEY}_#{next_id}"
   redis.set next_key, data
-  redis.expireat next_key, (Time.now.to_i + 86400) # expire in 24 hours
+  redis.expireat next_key, (Time.now.to_i + 604800) # expire in 1 week
 end
 
 def add_song(data)
@@ -50,10 +54,10 @@ end
 def get_next_song(last_song_id = "")
   keys = redis.keys("#{KEY}_*")
   # make sure the same song won't play again
-  keys.delete(last_song_id)
+  keys.delete(last_song_id) if keys.size > 1
   # get random id from song keys
   next_song_key = keys.sample
-  
+
   # split data and add key
   song_data = split_data redis.get(next_song_key)
   song_data[:key] = next_song_key

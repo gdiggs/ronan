@@ -1,7 +1,11 @@
 $(function() {
 
   var setMessage = function(data) {
-    $('.message').fadeOut(200).delay(200).text(data.message).fadeIn(200);
+    $('.message').fadeOut(200)
+    setTimeout(function() {
+      $('.message').text(data.message).fadeIn(200);
+    }, 200);
+
     if(data.status == 'success') {
       $('.message').removeClass('error');
     } else {
@@ -10,22 +14,24 @@ $(function() {
   };
 
   // when the song ends, get the next song and update all the appropriate values
-  $('.player audio')[0].addEventListener('ended', function() {
-    var player = this;
+  if($('.player audio').length > 0) {
+    $('.player audio')[0].addEventListener('ended', function() {
+      var player = this;
 
-    $.getJSON('/next_song', {last_song_id: $('.song_key').val()}, function(response) {
-      $('.now-playing .title').text(response.title)
-      $('.now-playing .artist').text(response.artist)
-      $('.now-playing .added_by').text(response.added_by)
-      $('.now-playing .download').attr('href', response.url);
-      $('.song_key').val(response.key);
+      $.getJSON('/next_song', {last_song_id: $('.song_key').val()}, function(response) {
+        $('.now-playing .title').text(response.title)
+        $('.now-playing .artist').text(response.artist)
+        $('.now-playing .added_by').text(response.added_by)
+        $('.now-playing .download').attr('href', response.url);
+        $('.song_key').val(response.key);
 
-      $('.vote_to_delete').show();
+        $('.vote_to_delete').show();
 
-      player.src = response.url;
-      player.currentTime = 0;
-    });
-  }, false);
+        player.src = response.url;
+        player.currentTime = 0;
+      });
+    }, false);
+  }
 
   // tell the server to delete this song if it gets enough votes
   $('.vote_to_delete').click(function() {

@@ -1,0 +1,52 @@
+html
+  :background-color black
+  :background url(http://upload.wikimedia.org/wikipedia/commons/0/01/Vinyl_disk_archive_%28The_Beatles_Story%29.jpg) no-repeat center center fixed 
+  :-webkit-background-size cover
+  :-moz-background-size cover
+  :background-size cover
+  :text-align center
+  :font-family 'Lato', sans-serif
+
+a, a:visited, a:active
+  :color black
+  &:hover
+    :text-decoration none
+
+.content
+  :margin 0 auto
+  :margin-top 50px
+  :padding 20px
+  :width 600px
+  :border-radius 15px
+  :background rgba(255,255,255, 0.8)
+
+  .message
+    :display none
+    :padding 5px
+    :background rgba(150, 210, 70, 0.4)
+    :border 1px solid #96d246
+    :border-radius 5px
+    &.error
+      :background rgba(215, 56, 56, 0.4)
+      :border 1px solid #d73838
+
+  .player
+    :padding-top 20px
+    .now-playing
+      :font-size 20px
+      span.title
+        :font-style italic
+      a
+        :font-size 16px
+    audio
+      :padding-top 10px
+      :width 100%
+  
+  .suggest
+    :padding-top 20px
+
+.footer
+  :color white
+  :opacity 0.7
+  :font-size 10px
+  :margin-top 30px
