@@ -12,7 +12,7 @@ Specify an `ENV['REDISTOGO_URL']` value if you are running in production mode (h
 ```bash
   $ bundle install
   $ ruby ./ronan.rb
-`
+```
 
 ## Français
 Ronan est une application qui acte comme une station de radio collective. Les chansons sont ajoutées et mémorisées en Redis. L'application utilise Sinatra.
@@ -23,7 +23,7 @@ Ajoute un variable `ENV['REDISTOGO_URL']` si tu utilise le mode de production (h
 ```bash
   $ bundle install
   $ ruby ./ronan.rb
-`
+```
 
 ## License
 ### The MIT License (MIT)
