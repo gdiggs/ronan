@@ -10,6 +10,8 @@ $(function() {
       $('.now-playing .download').attr('href', response.url);
       $('.song_key').val(response.key);
 
+      document.title = response.title + " by " + response.artist + " - Ronan";
+
       $('.vote_to_delete').show();
 
       player.src = response.url;
