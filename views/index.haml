@@ -18,7 +18,10 @@
             %span.added_by= @first_song[:added_by]
             %br
             %a.download{ :href => @first_song[:url], :target => '_blank' } download
+            |
             %a.vote_to_delete{ :href => '' } vote to delete this song
+            |
+            %a.skip_song{ :href => '' } skip song
           
           %audio{ :src => @first_song[:url], :autoplay => 'autoplay', :controls => 'controls', :song_key => @key }
             Bro, get a real browser, like Chrome or something.

@@ -1,5 +1,22 @@
 $(function() {
 
+  var getNextSong = function() {
+    var player = $('.player audio')[0];
+
+    $.getJSON('/next_song', {last_song_id: $('.song_key').val()}, function(response) {
+      $('.now-playing .title').text(response.title)
+      $('.now-playing .artist').text(response.artist)
+      $('.now-playing .added_by').text(response.added_by)
+      $('.now-playing .download').attr('href', response.url);
+      $('.song_key').val(response.key);
+
+      $('.vote_to_delete').show();
+
+      player.src = response.url;
+      player.currentTime = 0;
+    });
+  };
+
   var setMessage = function(data) {
     $('.message').fadeOut(200)
     setTimeout(function() {
@@ -16,20 +33,7 @@ $(function() {
   // when the song ends, get the next song and update all the appropriate values
   if($('.player audio').length > 0) {
     $('.player audio')[0].addEventListener('ended', function() {
-      var player = this;
-
-      $.getJSON('/next_song', {last_song_id: $('.song_key').val()}, function(response) {
-        $('.now-playing .title').text(response.title)
-        $('.now-playing .artist').text(response.artist)
-        $('.now-playing .added_by').text(response.added_by)
-        $('.now-playing .download').attr('href', response.url);
-        $('.song_key').val(response.key);
-
-        $('.vote_to_delete').show();
-
-        player.src = response.url;
-        player.currentTime = 0;
-      });
+      getNextSong();
     }, false);
   }
 
@@ -46,6 +50,11 @@ $(function() {
         $link.hide();
       }
     });
+    return false;
+  });
+
+  $('.skip_song').click(function() {
+    getNextSong();
     return false;
   });
 
