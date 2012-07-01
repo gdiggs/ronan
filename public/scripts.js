@@ -77,7 +77,7 @@ $(function() {
         setMessage(response);
 
         if(response.status == 'success') {
-          $form.find('input').val('');
+          $form.find('input[type="text"]').val('');
 
           // if we haven't been playing anything, refresh the page
           // so there will be music
